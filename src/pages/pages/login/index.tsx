@@ -196,7 +196,7 @@ const LoginPage = () => {
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
+              <Link passHref href='/' legacyBehavior>
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
               </Link>
             </Box>
@@ -214,31 +214,31 @@ const LoginPage = () => {
                 New on our platform?
               </Typography>
               <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
+                <Link passHref href='/pages/register' legacyBehavior>
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
             </Box>
             <Divider sx={{ my: 5 }}>or</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
+              <Link href='/' passHref legacyBehavior>
                 <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                   <Facebook sx={{ color: '#497ce2' }} />
                 </IconButton>
               </Link>
-              <Link href='/' passHref>
+              <Link href='/' passHref legacyBehavior>
                 <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                   <Twitter sx={{ color: '#1da1f2' }} />
                 </IconButton>
               </Link>
-              <Link href='/' passHref>
+              <Link href='/' passHref legacyBehavior>
                 <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                   <Github
                     sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
                   />
                 </IconButton>
               </Link>
-              <Link href='/' passHref>
+              <Link href='/' passHref legacyBehavior>
                 <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                   <Google sx={{ color: '#db4437' }} />
                 </IconButton>

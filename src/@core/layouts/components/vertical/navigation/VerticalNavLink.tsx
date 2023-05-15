@@ -79,7 +79,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
       disabled={item.disabled || false}
       sx={{ mt: 1.5, px: '0 !important' }}
     >
-      <Link passHref href={item.path === undefined ? '/' : `${item.path}`}>
+      <Link passHref href={item.path === undefined ? '/' : `${item.path}`} legacyBehavior>
         <MenuNavLink
           component={'a'}
           className={isNavLinkActive() ? 'active' : ''}

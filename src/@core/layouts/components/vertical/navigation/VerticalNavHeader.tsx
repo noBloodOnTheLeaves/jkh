@@ -57,7 +57,7 @@ const VerticalNavHeader = (props: Props) => {
       {userVerticalNavMenuBranding ? (
         userVerticalNavMenuBranding(props)
       ) : (
-        <Link href='/' passHref>
+        <Link href='/' passHref legacyBehavior>
           <StyledLink>
             <Home color={"primary"}/>
             <HeaderTitle variant='h6' sx={{ ml: 3 }}>
