@@ -1,6 +1,6 @@
 // ** React Imports
 import {Box, Button, ButtonGroup, Grid, Menu, MenuItem, Paper, Tab, Tabs} from '@mui/material'
-import {FC, SyntheticEvent, useState, MouseEvent, useEffect} from 'react'
+import {FC, SyntheticEvent, useState, MouseEvent} from 'react'
 import TableStickyHeader from "../../views/tables/TableStickyHeader";
 
 import {
@@ -13,7 +13,9 @@ import {
   SearchWeb,
   WifiPlus
 } from "mdi-material-ui";
-import RequestData from "../../types/request";
+import {dehydrate, QueryClient} from "@tanstack/react-query";
+import {useGetRequestData} from "./hooks/useGetRequestData";
+import {getRequestData} from "./api/getRequestData";
 
 interface Column {
   id: string
@@ -67,9 +69,27 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+//принимаем данные с фишками react-query
+// данный код находится в родительской компоненте,
+// далее в дочерних мы можем обращаться к данным через хуки
+export async function getStaticProps() {
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery(['request'], getRequestData)
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
+}
+
 const RequestPage: FC = () => {
   // ** States
-  const [data, setData] = useState<RequestData[]>([]);
+  //const [data, setData] = useState<RequestData[]>([]);
+  // запрашиваем данные
+  const { data } = useGetRequestData();
+
   const [tab, setTab] = useState(0);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -78,14 +98,14 @@ const RequestPage: FC = () => {
   const [anchorElTask, setAnchorElTask] = useState<null | HTMLElement>(null);
   const openTask = Boolean(anchorElTask);
 
-  useEffect(()=>{
+/*  useEffect(()=>{
     const fetchRequestData = async () => {
       const res = await fetch('http://localhost:3000/api/request');
       const data = await res.json();
       setData(data);
     }
     fetchRequestData();
-  }, [])
+  }, [])*/
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

@@ -30,7 +30,6 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Заявки',
       icon: Table,
       path: '/request',
-      openInNewTab: true
     },
     {
       title: 'Страница 404',

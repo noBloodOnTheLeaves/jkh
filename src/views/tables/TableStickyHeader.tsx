@@ -21,10 +21,10 @@ interface Column {
 
 interface TableStickyHeaderProps {
   columns: Column[],
-  rows: any[]
+  rows: any[]|undefined
 }
 
-const TableStickyHeader: FC<TableStickyHeaderProps> = ({columns,rows}) => {
+const TableStickyHeader: FC<TableStickyHeaderProps> = ({columns,rows }) => {
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
@@ -52,7 +52,7 @@ const TableStickyHeader: FC<TableStickyHeaderProps> = ({columns,rows}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            {rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
               return (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.number}>
                   {columns.map(column => {
@@ -73,7 +73,7 @@ const TableStickyHeader: FC<TableStickyHeaderProps> = ({columns,rows}) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={rows.length}
+        count={rows?.length ?? 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

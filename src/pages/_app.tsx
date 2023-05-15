@@ -7,6 +7,11 @@ import type { AppProps } from 'next/app'
 // ** Loader Import
 import NProgress from 'nprogress'
 
+// ** React Query import
+import {
+  Hydrate,
+} from '@tanstack/react-query'
+
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
 import type { EmotionCache } from '@emotion/cache'
@@ -23,6 +28,7 @@ import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsCo
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+import ReactQueryProvider from 'src/@core/utils/react-query-provider'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
@@ -59,25 +65,29 @@ const App = (props: ExtendedAppProps) => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName}`}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName}`}
-        />
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+    <ReactQueryProvider>
+      <Hydrate state={pageProps.dehydratedState}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <title>{`${themeConfig.templateName}`}</title>
+            <meta
+              name='description'
+              content={`${themeConfig.templateName}`}
+            />
+            <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template'/>
+            <meta name='viewport' content='initial-scale=1, width=device-width'/>
+          </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+          <SettingsProvider>
+            <SettingsConsumer>
+              {({settings}) => {
+                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </CacheProvider>
+      </Hydrate>
+    </ReactQueryProvider>
   )
 }
 
