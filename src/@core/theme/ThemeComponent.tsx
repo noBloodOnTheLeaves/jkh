@@ -5,6 +5,9 @@ import { ReactNode } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
+import {ruRU as coreRuRu} from "@mui/material/locale";
+import {ruRU as gridRuRu} from "@mui/x-data-grid";
+import {ruRU as dateRuRu} from "@mui/x-date-pickers";
 
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
@@ -41,7 +44,7 @@ const ThemeComponent = (props: Props) => {
   theme = createTheme(theme, {
     components: { ...overrides(theme) },
     typography: { ...typography(theme) }
-  })
+  }, coreRuRu, gridRuRu, dateRuRu)
 
   // ** Set responsive font sizes to true
   if (themeConfig.responsiveFontSizes) {
