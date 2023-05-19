@@ -3,13 +3,14 @@ import Table from 'mdi-material-ui/Table'
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
-import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
+//import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
+import {AccountHardHat, EmailOutline, HammerScrewdriver, NotebookEditOutline, TextBoxOutline} from "mdi-material-ui";
 
 const navigation = (): VerticalNavItemsType => {
   return [
@@ -19,17 +20,38 @@ const navigation = (): VerticalNavItemsType => {
       path: '/'
     },
     {
+      title: 'Планирование',
+      icon: NotebookEditOutline,
+      path: '/planning'
+    },
+    {
+      title: 'Подрядчики',
+      icon: AccountHardHat,
+      path: '/contractor',
+    },
+    {
+      title: 'Работы',
+      icon: HammerScrewdriver,
+      path: '/jobs',
+    },
+    {
+      title: 'Отчётность',
+      icon: TextBoxOutline,
+      path: '/reports',
+    },
+    {
+      title: 'Почта',
+      icon: EmailOutline,
+      path: '/mail',
+    },
+
+    /*{
       title: 'Настройки аккаунта',
       icon: AccountCogOutline,
       path: '/account-settings'
-    },
+    },*/
     {
       sectionTitle: 'Страницы'
-    },
-    {
-      title: 'Заявки',
-      icon: Table,
-      path: '/request',
     },
     {
       title: 'Страница 404',

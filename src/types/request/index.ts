@@ -1,4 +1,5 @@
 export default interface RequestData {
+  id?: number,
   number: string,
   date: string,
   updated_at: string,

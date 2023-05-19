@@ -1,7 +1,8 @@
 // ** React Imports
 import {Box, Button, ButtonGroup, Grid, Menu, MenuItem, Paper, Tab, Tabs} from '@mui/material'
 import {FC, SyntheticEvent, useState, MouseEvent} from 'react'
-import TableStickyHeader from "../../views/tables/TableStickyHeader";
+
+//import TableStickyHeader from "../../views/tables/TableStickyHeader";
 
 import {
   Check,
@@ -16,16 +17,20 @@ import {
 import {dehydrate, QueryClient} from "@tanstack/react-query";
 import {useGetRequestData} from "./hooks/useGetRequestData";
 import {getRequestData} from "./api/getRequestData";
+import {GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
+import CustomDataGrid from "../../views/tables/CustomGrid/CustomDataGrid";
+import GridCellExpand from "../../views/tables/CustomGrid/GridCellExpand";
+import {useRouter} from "next/router";
 
-interface Column {
+/*interface Column {
   id: string
   label: string
   minWidth?: number
   align?: 'right'
   format?: (value: number) => string
-}
+}*/
 
-const columns: Column[] = [
+/*const columns: Column[] = [
   {  id: 'number', label: 'Номер' },
   {  id: 'date', label: 'Дата' },
   {  id: 'updated_at', label: 'Дата изменения' },
@@ -41,6 +46,32 @@ const columns: Column[] = [
   {  id: 'applicant_phone', label: 'Тел. заявителя' },
   {  id: 'responsible', label: 'Ответственный' },
   {  id: 'responsible_phone', label: 'Тел. ответственного' },
+];*/
+
+const dataGridColumns: GridColDef[] = [
+  {  field: 'number', headerName: 'Номер' },
+  {  field: 'date', headerName: 'Дата' },
+  {  field: 'updated_at', headerName: 'Дата изменения', minWidth: 200  },
+  {  field: 'task_name', headerName: 'Наименование', minWidth: 200 , sortable: false  },
+  {  field: 'street', headerName: 'Улица', sortable: false ,
+    renderCell: (params: GridRenderCellParams) => (
+      <GridCellExpand {...params} />
+    )
+  },
+  {  field: 'house', headerName: 'Дом' },
+  {  field: 'room', headerName: 'Помещение' },
+  {  field: 'period', headerName: 'Срок' },
+  {  field: 'executor', headerName: 'Исполнитель' },
+  {  field: 'title', headerName: 'Тема' },
+  {  field: 'description', headerName: 'Содержание', minWidth: 500,
+    renderCell: (params: GridRenderCellParams) => (
+      <GridCellExpand {...params} />
+    )
+  },
+  {  field: 'applicant', headerName: 'Заявитель' },
+  {  field: 'applicant_phone', headerName: 'Тел. заявителя', minWidth: 100 },
+  {  field: 'responsible', headerName: 'Ответственный',minWidth: 100 },
+  {  field: 'responsible_phone', headerName: 'Тел. ответственного', minWidth: 100 },
 ]
 
 interface TabPanelProps {
@@ -89,6 +120,7 @@ const RequestPage: FC = () => {
   //const [data, setData] = useState<RequestData[]>([]);
   // запрашиваем данные
   const { data } = useGetRequestData();
+  const router = useRouter();
 
   const [tab, setTab] = useState(0);
 
@@ -271,9 +303,31 @@ const RequestPage: FC = () => {
             </Button>
           </Grid>
         </Grid>
-        <TableStickyHeader
+        {/*<TableStickyHeader
           rows={data}
           columns={columns}
+        />*/}
+        <CustomDataGrid
+          rows={data}
+          columns={dataGridColumns}
+          onRowClick={(params)=>{router.push(
+            {
+              pathname: `/contractor/request/${params.id}`,
+              query: {
+                id: params.id,
+                street: params.row.street,
+                number: params.row.number,
+                date: params.row.date,
+                period: params.row.period,
+                executor: params.row.executor,
+                status: params.row.status,
+                applicant: params.row.applicant,
+                house: params.row.house,
+                room: params.row.room,
+                title: params.row.title,
+              },
+            }
+            )}}
         />
       </TabPanel>
     </Paper>
