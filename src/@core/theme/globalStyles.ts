@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import {Theme} from '@mui/material/styles'
 
 const GlobalStyles = (theme: Theme) => {
   return {
@@ -27,6 +27,24 @@ const GlobalStyles = (theme: Theme) => {
           }
         }
       }
+    },
+
+    //scrollbar
+    '*::-webkit-scrollbar': {
+      width: '10px',
+      height: '8px',
+    },
+    '*::-webkit-scrollbar-track': {
+      background: 'inherit',
+      boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: theme.palette.primary.light,
+      borderRadius: '20px',
+      border: theme.palette.primary.light,
+    },
+    '*::-webkit-scrollbar-corner': {
+      background: 'inherit',
     },
 
     '#nprogress': {
