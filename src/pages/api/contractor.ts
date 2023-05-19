@@ -9,5 +9,11 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<RequestData>
 ) {
-  res.status(200).json(request)
+  const addId = request.map((row) => {
+    // @ts-ignore
+    row.id = Math.floor(Math.random() * (201 - 1 + 1)) + 1;
+
+    return row;
+  })
+  res.status(200).json(addId)
 }
