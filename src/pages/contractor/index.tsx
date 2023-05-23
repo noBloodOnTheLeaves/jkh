@@ -190,6 +190,9 @@ const RequestPage: FC = () => {
             <Button
               color={'success'}
               startIcon={<Plus/>}
+              onClick={()=>{
+                router.push('/contractor/request/new')}
+              }
             >
               Создать Заявку
             </Button>
