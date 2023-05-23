@@ -21,6 +21,7 @@ import {GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
 import CustomDataGrid from "../../views/tables/CustomGrid/CustomDataGrid";
 import GridCellExpand from "../../views/tables/CustomGrid/GridCellExpand";
 import {useRouter} from "next/router";
+import {useBoundStore} from "../../stores/hooks/useBoundStore";
 
 /*interface Column {
   id: string
@@ -129,6 +130,11 @@ const RequestPage: FC = () => {
 
   const [anchorElTask, setAnchorElTask] = useState<null | HTMLElement>(null);
   const openTask = Boolean(anchorElTask);
+
+  //store
+  const userContractorColumnsModel = useBoundStore((UserSlice) => UserSlice.tableContractor)
+  const setUserContractorColumns = useBoundStore((UserSlice) => UserSlice.setTableView)
+
 
 /*  useEffect(()=>{
     const fetchRequestData = async () => {
@@ -331,6 +337,8 @@ const RequestPage: FC = () => {
               },
             }
             )}}
+          onColumnVisibilityModelChange={setUserContractorColumns}
+          columnVisibilityModel={userContractorColumnsModel}
         />
       </TabPanel>
     </Paper>

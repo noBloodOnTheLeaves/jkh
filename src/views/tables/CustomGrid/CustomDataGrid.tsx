@@ -2,7 +2,7 @@
 import {darken, lighten, styled} from "@mui/material/styles";
 import {DataGrid, GridColDef, GridEventListener, GridRowsProp, GridToolbar} from "@mui/x-data-grid";
 import {FC} from "react";
-
+import {GridColumnVisibilityModel} from "@mui/x-data-grid/hooks/features/columns/gridColumnsInterfaces";
 
 const getBackgroundColor = (color: string, mode: string) =>
   mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7);
@@ -115,13 +115,17 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
 interface TableStickyHeaderProps {
   columns: GridColDef[],
   rows: GridRowsProp[],
-  onRowClick: GridEventListener<'rowClick'>
+  onRowClick: GridEventListener<'rowClick'>,
+  onColumnVisibilityModelChange: (model: GridColumnVisibilityModel) => void,
+  columnVisibilityModel: GridColumnVisibilityModel
 }
 
 const CustomDataGrid: FC<TableStickyHeaderProps> =  ({
                                                        rows ,
                                                        columns,
                                                        onRowClick,
+                                                       onColumnVisibilityModelChange,
+                                                       columnVisibilityModel,
 }) => {
   return (
     <StyledDataGrid
@@ -142,6 +146,8 @@ const CustomDataGrid: FC<TableStickyHeaderProps> =  ({
       disableColumnMenu={true}
       getRowClassName={(params) => `super-app-theme--${params.row.status}`}
       onRowClick={onRowClick}
+      columnVisibilityModel={columnVisibilityModel}
+      onColumnVisibilityModelChange={onColumnVisibilityModelChange}
     />
   )
 }

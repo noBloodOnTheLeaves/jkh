@@ -8,6 +8,7 @@ import WeatherSunny from 'mdi-material-ui/WeatherSunny'
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
+import {useBoundStore} from "../../../../stores/hooks/useBoundStore";
 
 interface Props {
   settings: Settings
@@ -18,6 +19,8 @@ const ModeToggler = (props: Props) => {
   // ** Props
   const { settings, saveSettings } = props
 
+  const changeUserTheme = useBoundStore((UserSlice) => UserSlice.setMaterialTheme)
+
   const handleModeChange = (mode: PaletteMode) => {
     saveSettings({ ...settings, mode })
   }
@@ -25,8 +28,10 @@ const ModeToggler = (props: Props) => {
   const handleModeToggle = () => {
     if (settings.mode === 'light') {
       handleModeChange('dark')
+      changeUserTheme('dark')
     } else {
       handleModeChange('light')
+      changeUserTheme('light')
     }
   }
 

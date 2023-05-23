@@ -64,7 +64,8 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "^18.2.0",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@mui/x-date-pickers": "^6.3.1",

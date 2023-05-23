@@ -3,6 +3,7 @@ import { PaletteMode } from '@mui/material'
 
 // ** Types
 import { ContentWidth } from 'src/@core/layouts/types'
+import {useBoundStore} from "../stores/hooks/useBoundStore";
 
 type ThemeConfig = {
   mode: PaletteMode
@@ -18,7 +19,7 @@ type ThemeConfig = {
 const themeConfig: ThemeConfig = {
   // ** Layout Configs
   templateName: 'ЖКХ 2.0' /* App Name */,
-  mode: 'light' /* light | dark */,
+  mode: useBoundStore.getState().materialTheme /* light | dark */,
   contentWidth: 'boxed' /* full | boxed */,
 
   // ** Routing Configs
