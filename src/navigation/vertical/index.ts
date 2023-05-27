@@ -11,6 +11,7 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 import {AccountHardHat, EmailOutline, HammerScrewdriver, NotebookEditOutline, TextBoxOutline} from "mdi-material-ui";
+import contractor from "./children/contractor";
 
 const navigation = (): VerticalNavItemsType => {
   return [
@@ -28,6 +29,9 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Подрядчики',
       icon: AccountHardHat,
       path: '/contractor',
+      children: [
+        ...contractor()
+      ]
     },
     {
       title: 'Работы',

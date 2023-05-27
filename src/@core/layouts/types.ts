@@ -15,6 +15,19 @@ export type NavLink = {
   externalLink?: boolean
   openInNewTab?: boolean
   icon?: string | string[] | ReactNode
+  children?: NavGroup[]
+  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+}
+
+export type NavGroup = {
+  icon?: string | string[] | ReactNode
+  title: string
+  action?: string
+  subject?: string
+  badgeContent?: string
+  children?: NavLink[]
+  openInNewTab?: boolean
+  path?: string
   badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
 }
 
@@ -24,12 +37,12 @@ export type NavSectionTitle = {
   subject?: string
 }
 
-export type VerticalNavItemsType = (NavLink | NavSectionTitle)[]
+export type VerticalNavItemsType = (NavLink | NavSectionTitle | NavGroup)[]
 
 export type LayoutProps = {
   hidden: boolean
   settings: Settings
-  children: ReactNode
+  children: ReactNode | NavGroup
   verticalNavItems?: VerticalNavItemsType
   scrollToTop?: (props?: any) => ReactNode
   saveSettings: (values: Settings) => void

@@ -1,5 +1,5 @@
 // ** React Imports
-import { ElementType, ReactNode } from 'react'
+import {ElementType, ReactNode} from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -26,6 +26,8 @@ import UserIcon from 'src/layouts/components/UserIcon'
 
 // ** Utils
 import { handleURLQueries } from 'src/@core/layouts/utils'
+import {Collapse, List, Tooltip} from "@mui/material";
+import {MenuDown, MenuRight} from "mdi-material-ui";
 
 interface Props {
   item: NavLink
@@ -73,7 +75,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
   }
 
   return (
-    <ListItem
+    <><ListItem
       disablePadding
       className='nav-link'
       disabled={item.disabled || false}
@@ -123,9 +125,32 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
               />
             ) : null}
           </MenuItemTextMetaWrapper>
+          {item?.children !== undefined ? isNavLinkActive() ? <MenuDown /> : <MenuRight /> : null}
         </MenuNavLink>
       </Link>
     </ListItem>
+      {item?.children !== undefined ?
+          <Collapse in={isNavLinkActive()} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {
+                item.children.map((child)=>
+
+                    <Link passHref href={child.path === undefined ? '/' : `${child.path}`} legacyBehavior key={child.path}>
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <Tooltip title={child.title} arrow placement={"top"} followCursor>
+                        <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })} style={{paddingLeft: 40}}>{child.title}</Typography>
+                        </Tooltip>
+                      </ListItemButton>
+                    </Link>
+                )
+              }
+            </List>
+          </Collapse>
+         : null
+      }
+    </>
   )
 }
 
