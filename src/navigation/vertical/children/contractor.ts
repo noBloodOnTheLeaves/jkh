@@ -6,12 +6,12 @@ const contractor = (): NavLink[] => {
     {
       title: 'Заявки подрядчика',
       icon: NotebookEditOutline,
-      path: '/contractor/request',
+      path: '/contractor/requests',
     },
     {
       title: 'Подрядчики',
       icon: NotebookEditOutline,
-      path: '/contractor/contractor/[id]',
+      path: '/contractor',
     },
     {
       title: 'Группа домов и мастеров',

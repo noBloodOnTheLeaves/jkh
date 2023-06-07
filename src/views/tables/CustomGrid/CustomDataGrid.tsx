@@ -16,7 +16,7 @@ const getSelectedBackgroundColor = (color: string, mode: string) =>
 const getSelectedHoverBackgroundColor = (color: string, mode: string) =>
   mode === 'dark' ? darken(color, 0.4) : lighten(color, 0.4);
 
-const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+const StyledDataGrid = styled(DataGrid)(({theme}) => ({
   '& .super-app-theme--Open': {
     backgroundColor: getBackgroundColor(theme.palette.info.main, theme.palette.mode),
     '&:hover': {
@@ -114,19 +114,31 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
 
 interface TableStickyHeaderProps {
   columns: GridColDef[],
-  rows: GridRowsProp[],
-  onRowClick: GridEventListener<'rowClick'>,
-  onColumnVisibilityModelChange: (model: GridColumnVisibilityModel) => void,
-  columnVisibilityModel: GridColumnVisibilityModel
+  rows: GridRowsProp,
+  onRowClick?: GridEventListener<'rowClick'>,
+  onColumnVisibilityModelChange?: (model: GridColumnVisibilityModel) => void,
+  columnVisibilityModel?: GridColumnVisibilityModel,
+  hideFooter?: boolean,
+  autoHeight?: boolean,
+  disableColumnMenu?: boolean,
+  slots?: boolean,
+  style?: any,
+  className?: string
 }
 
-const CustomDataGrid: FC<TableStickyHeaderProps> =  ({
-                                                       rows ,
-                                                       columns,
-                                                       onRowClick,
-                                                       onColumnVisibilityModelChange,
-                                                       columnVisibilityModel,
-}) => {
+const CustomDataGrid: FC<TableStickyHeaderProps> = ({
+                                                      rows,
+                                                      columns,
+                                                      onRowClick,
+                                                      onColumnVisibilityModelChange,
+                                                      columnVisibilityModel,
+                                                      hideFooter = false,
+                                                      autoHeight = false,
+                                                      disableColumnMenu = true,
+                                                      slots = true,
+                                                      style,
+                                                      className
+                                                    }) => {
   return (
     <StyledDataGrid
       rows={rows}
@@ -140,14 +152,23 @@ const CustomDataGrid: FC<TableStickyHeaderProps> =  ({
       }}
       pageSizeOptions={[5, 25, 50, 100]}
       disableRowSelectionOnClick
-      slots={{
+      slots={slots ?{
         toolbar: GridToolbar,
-      }}
-      disableColumnMenu={true}
+      } : undefined}
+      disableColumnMenu={disableColumnMenu}
       getRowClassName={(params) => `super-app-theme--${params.row.status}`}
       onRowClick={onRowClick}
       columnVisibilityModel={columnVisibilityModel}
       onColumnVisibilityModelChange={onColumnVisibilityModelChange}
+      hideFooter={hideFooter}
+      autoHeight={autoHeight}
+      style={style}
+      sx={onRowClick ? {
+        '& .MuiDataGrid-row:hover': {
+          cursor: 'pointer'
+        }
+      } : {}}
+      className={className}
     />
   )
 }

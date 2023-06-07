@@ -1,70 +1,96 @@
 // ** React Imports
-import {useState, MouseEvent} from 'react'
+import React, {useState, SyntheticEvent} from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Select from '@mui/material/Select'
-import {styled} from '@mui/material/styles'
-import MenuItem from '@mui/material/MenuItem'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-import {ButtonGroup, Card, Divider, Menu, Checkbox, FormControlLabel, InputAdornment} from '@mui/material'
+import {ButtonGroup, Tabs, Tab, TabsProps} from '@mui/material'
 
 // ** Icons Imports
 import {useRouter} from "next/router";
 import {
-  AccountHardHat,
   ArrowLeftBold,
-  ArrowRightBold,
-  Check, Close, Cog, ContentSave,
-  EmailOpen,
-  FileDocument, Folder, Hammer, HomeEdit, Lan,
-  MenuDown, PrinterOutline,
-  Reload,
+  ArrowRightBold, Close,
+  LinkVariant,
   StarOutline,
-  TableLarge
 } from "mdi-material-ui";
-import Phone from "mdi-material-ui/Phone";
-import MessageOutline from "mdi-material-ui/MessageOutline";
-import {DataGrid, GridColDef} from "@mui/x-data-grid";
+import Main from "./tabs/Main";
+import {styled} from "@mui/material/styles";
+import {TabProps} from "@mui/material/Tab";
+import Tasks from "./tabs/Tasks";
+import History from "./tabs/History";
+import DotsVertical from "mdi-material-ui/DotsVertical";
+import Comments from "./tabs/Comments";
 
-const ImgStyled = styled('img')(({theme}) => ({
-  width: 120,
-  height: 120,
-  marginRight: theme.spacing(6.25),
-  borderRadius: theme.shape.borderRadius
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 0 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+const StyledTabs = styled((props: TabsProps) => (
+  <Tabs
+    {...props}
+    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+  />
+))({
+  '& .MuiTabs-indicator': {
+    display: 'none',
+  },
+});
+
+const StyledTab = styled((props: TabProps) => (
+  <Tab disableRipple {...props} />
+))(({ theme }) => ({
+    '&.Mui-selected': {
+      background: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+      borderRadius: '0 0 8px 8px',
+      marginLeft: 15
+    }
 }))
-
-const dataGridColumns: GridColDef[] = [
-  {field: 'number', headerName: 'Дата отправки', sortable: false, width: 150},
-  {field: 'date', headerName: 'Текст сообщения', sortable: false, width: 500},
-]
 
 const RequestOrder = () => {
   // ** State
-  const [imgSrc,] = useState<string>('/images/avatars/1.png')
+  const [tab, setTab] = useState(0);
   const router = useRouter();
-
-  const [anchorElTask, setAnchorElTask] = useState<null | HTMLElement>(null);
-  const openTask = Boolean(anchorElTask);
-
-  const handleClickTask = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElTask(event.currentTarget);
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
+    setTab(newValue);
   };
 
-
-  const handleCloseTask = () => {
-    setAnchorElTask(null);
-  };
+  const a11yProps = (index: number) => {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 
   return (
     <CardContent>
-      <Grid container mb={3}>
+      <Grid container mb={3} justifyContent={"space-between"}>
         <Grid item>
           <Box sx={{display: 'flex', alignItems: 'center', columnGap: 5}}>
             <ButtonGroup variant="outlined" aria-label="outlined button group">
@@ -76,336 +102,37 @@ const RequestOrder = () => {
               заявке {router.query.number} от {router.query.date}</Typography>
           </Box>
         </Grid>
+        <Grid item>
+          <Box sx={{display: 'flex', columnGap: 1}} justifyContent={"flex-end"}>
+            <Button size={"small"}><LinkVariant/></Button>
+            <Button size={"small"}><DotsVertical/></Button>
+            <Button size={"small"}><Close/></Button>
+          </Box>
+        </Grid>
       </Grid>
-      <Card>
-        <CardContent>
-          <form>
-            <Grid container spacing={6} direction={"row"} alignContent={"center"} justifyContent={"flex-start"}>
-              <Grid item lg={2} sm={6}>
-                <Grid container spacing={3} direction={"column"}>
-                  <Grid item>
-                    <TextField fullWidth label='Номер' defaultValue={router.query.number}/>
-                  </Grid>
-                  <Grid item>
-                    <TextField fullWidth label='Дата' defaultValue={router.query.date}/>
-                  </Grid>
-                  <Grid item>
-                    <TextField fullWidth label='Срок' defaultValue={router.query.period}/>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={3} sm={6}>
-                <Grid container spacing={3} direction={"column"}>
-                  <Grid item>
-                    <Button variant={"outlined"} color={"inherit"} fullWidth sx={{padding: '15.5px'}}>История
-                      сроков</Button>
-                  </Grid>
-                  <Grid item>
-                    <Button variant={"outlined"} disabled color={"inherit"} fullWidth sx={{padding: '15.5px'}}>Назначить
-                      новый срок</Button>
-                  </Grid>
-                  <Grid item>
-                    <TextField fullWidth label='Новый срок' defaultValue={router.query.period}/>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={7} md={12}>
-                <Grid container spacing={3}>
-                  <Grid item xs={9}>
-                    <TextField fullWidth label='УК' defaultValue={''}/>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField fullWidth label='СЭ' defaultValue={''}/>
-                  </Grid>
-                  <Grid item lg={4} sm={6}>
-                    <TextField fullWidth label='Исполнитель' defaultValue={router.query.executor}/>
-                  </Grid>
-                  <Grid item lg={4} sm={6}>
-                    <Button variant={"contained"} startIcon={<TableLarge/>} color={"info"} fullWidth
-                            sx={{padding: '15.5px', minWidth: '210px'}}>График мастеров</Button>
-                  </Grid>
-                  <Grid item lg={4} sm={6}>
-                    <TextField fullWidth label='Телефон ПО' defaultValue={''}/>
-                  </Grid>
-                  <Grid item lg={12} sm={6}>
-                    <TextField fullWidth label='Тема' defaultValue={router.query.period}/>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-              <Grid item lg={4} sm={6}>
-                <Grid container spacing={3} direction={"column"}>
-                  <Grid item xs={4}>
-                    <TextField fullWidth label='Вид обслуживания' defaultValue={""}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField fullWidth label='Вид заявки' defaultValue={""}/>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={4} sm={6}>
-                <Grid container spacing={3} direction={"column"}>
-                  <Grid item>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                      <ImgStyled src={imgSrc} alt='Profile Pic'/>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={12}>
-                <Grid container spacing={2} direction={"row"} alignItems={"center"}>
-                  <Grid item lg={2}>
-                    <FormControlLabel
-                      label='Выполнена: '
-                      labelPlacement={"start"}
-                      control={<Checkbox/>}
-                      sx={{'& .MuiButtonBase-root': {paddingTop: 0, paddingBottom: 0}}}
-                    />
-                  </Grid>
-                  <Grid item lg={2}>
-                    <FormControl fullWidth>
-                      <InputLabel>Статус</InputLabel>
-                      <Select label='Статус' defaultValue='active'>
-                        <MenuItem value='active'>В работе</MenuItem>
-                        <MenuItem value='inactive'>Закрыта</MenuItem>
-                        <MenuItem value='pending'>Подготовка</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-
-              <Grid item lg={12}>
-                <Grid container spacing={6} direction={"row"} alignItems={"center"}>
-                  <Grid item lg={3} sm={6}>
-                    <TextField fullWidth label='Заявитель' defaultValue={router.query.applicant}/>
-                  </Grid>
-                  <Grid item lg={3} sm={6}>
-                    <TextField fullWidth label='Осмотр МКД' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={3} sm={6}>
-                    <TextField fullWidth label='Оценка заявителя' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={1}>
-                    <Button variant={"contained"}><StarOutline/></Button>
-                  </Grid>
-                  <Grid item lg={1}>
-                    <Button variant={"contained"}><Reload/></Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item lg={12}>
-                <Grid container spacing={6} direction={"row"} alignItems={"center"}>
-                  <Grid item lg={6} sm={12}>
-                    <TextField fullWidth label='Улица' defaultValue={router.query.street}/>
-                  </Grid>
-                  <Grid item lg={2} sm={3}>
-                    <TextField fullWidth label='Дом' defaultValue={router.query.house}/>
-                  </Grid>
-                  <Grid item lg={1} sm={3}>
-                    <TextField fullWidth label='Пом.' defaultValue={router.query.room}/>
-                  </Grid>
-                  <Grid item lg={1} sm={3}>
-                    <TextField fullWidth label='Под.' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={2} sm={3}>
-                    <TextField fullWidth label='Код доступа' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={2} sm={6}>
-                    <TextField
-                      fullWidth
-                      label='Тел 1'
-                      type='number'
-                      placeholder='8(123)456-87-90'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Phone/>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </Grid>
-                  <Grid item lg={2} sm={6}>
-                    <TextField
-                      fullWidth
-                      label='Тел 2'
-                      type='number'
-                      placeholder='8(123)456-87-90'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Phone/>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </Grid>
-                  <Grid item lg={3}>
-                    <Button
-                      id="demo-positioned-button"
-                      color={'secondary'}
-                      variant={"contained"}
-                      aria-controls={openTask ? 'demo-positioned-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={openTask ? 'true' : undefined}
-                      startIcon={<FileDocument/>}
-                      endIcon={<MenuDown/>}
-                      onClick={handleClickTask}
-                      sx={{padding: '15.5px'}}
-                    >
-                      Создать заявку
-                    </Button>
-                    <Menu
-                      id="demo-positioned-menu"
-                      aria-labelledby="demo-positioned-button"
-                      anchorEl={anchorElTask}
-                      open={openTask}
-                      onClose={handleCloseTask}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                      }}
-                    >
-                      <MenuItem onClick={handleCloseTask}>Задача 1</MenuItem>
-                      <MenuItem onClick={handleCloseTask}>Задача 2</MenuItem>
-                    </Menu>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-
-              <Grid item lg={12}>
-                <Grid container spacing={6} direction={"row"} alignItems={"center"}>
-                  <Grid item lg={7} md={7} sm={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      minRows={6}
-                      hiddenLabel={true}
-                      value={router.query.title}
-                      sx={{'& .MuiOutlinedInput-root': {alignItems: 'baseline'}}}
-                    />
-                  </Grid>
-                  <Grid item lg={5} md={5} sm={12}>
-                    <DataGrid
-                      rows={[]}
-                      columns={dataGridColumns}
-                      autoHeight
-                      hideFooter
-                      disableColumnMenu={true}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField fullWidth label='Комментарий' defaultValue={""}/>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-              <Grid item lg={4} md={4} sm={10}>
-                <Grid container spacing={8} direction={"column"}>
-                  <Grid item lg={3}>
-                    <TextField fullWidth label='Дата 1-го обращ.' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={3}>
-                    <TextField fullWidth label='Дата 2-го обращ.' defaultValue={""}/>
-                  </Grid>
-                  <Grid item lg={3}>
-                    <TextField fullWidth label='Дата 3-го обращ.' defaultValue={""}/>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={1} md={1} sm={2}>
-                <Grid container spacing={13} direction={"column"} alignSelf={"center"} alignItems={"center"}
-                      justifyContent={"space-around"}>
-                  <Grid item lg={1} mt={1}>
-                    <Button variant={"outlined"}><Check/></Button>
-                  </Grid>
-                  <Grid item lg={1}>
-                    <Button variant={"outlined"}><Check/></Button>
-                  </Grid>
-                  <Grid item lg={1}>
-                    <Button variant={"outlined"}><Check/></Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={1}>
-                <Divider orientation="vertical"/>
-              </Grid>
-              <Grid item lg={6} md={6} sm={12}>
-                <Grid container spacing={5} direction={"row"} alignItems={"start"} justifyContent={"start"}>
-                  <Grid item lg={12}>
-                    <ButtonGroup>
-                      <Button size={"large"} variant={"outlined"} ><Lan color={"secondary"} sx={{fontSize: 60}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><Folder color={"warning"} sx={{fontSize: 60}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><PrinterOutline color={"info"} sx={{fontSize: 60}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><EmailOpen color={"secondary"} sx={{fontSize: 60}}/></Button>
-                    </ButtonGroup>
-                  </Grid>
-                  <Grid item lg={12}>
-                    <ButtonGroup>
-                      <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>АКП</Button>
-                      <Button sx={{fontSize: 20, padding: '15.5px'}} style={{minWidth: '108px'}} variant={"outlined"} color={"inherit"} >АКТ А5</Button>
-                      <Button size={"large"} variant={"outlined"} fullWidth><Cog color={"secondary"} sx={{fontSize: 50}}/></Button>
-                      <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>П</Button>
-                      <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>НКО</Button>
-                    </ButtonGroup>
-                  </Grid>
-                  <Grid item lg={12}>
-                    <ButtonGroup>
-                      <Button size={"large"} variant={"outlined"} ><ContentSave color={"secondary"} sx={{fontSize: 50}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><Close color={"secondary"} sx={{fontSize: 50}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><AccountHardHat color={"warning"} sx={{fontSize: 50}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><Hammer color={"secondary"} sx={{fontSize: 50}}/></Button>
-                      <Button size={"large"} variant={"outlined"} ><HomeEdit color={"secondary"} sx={{fontSize: 50}}/></Button>
-                    </ButtonGroup>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={7}
-                  hiddenLabel={true}
-                  placeholder='Заполните...'
-                  sx={{'& .MuiOutlinedInput-root': {alignItems: 'baseline'}}}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <MessageOutline/>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </form>
-        </CardContent>
-      </Card>
+      <TabPanel value={tab} index={0}>
+          <Main/>
+      </TabPanel>
+      <TabPanel value={tab} index={1}>
+        <Tasks/>
+      </TabPanel>
+      <TabPanel index={2} value={tab}>
+          <History/>
+      </TabPanel>
+      <TabPanel index={5} value={tab}>
+        <Comments/>
+      </TabPanel>
+      <StyledTabs
+        value={tab}
+        onChange={handleChange}
+      >
+        <StyledTab label="Основная" {...a11yProps(0)} />
+        <StyledTab label="Задачи" {...a11yProps(1)} />
+        <StyledTab label="История" {...a11yProps(2)} />
+        <StyledTab label="Комментарии на нижний" {...a11yProps(3)} />
+        <StyledTab label="Ущерб" {...a11yProps(4)} />
+        <StyledTab label="Комментарии" {...a11yProps(5)} />
+      </StyledTabs>
     </CardContent>
   )
 }

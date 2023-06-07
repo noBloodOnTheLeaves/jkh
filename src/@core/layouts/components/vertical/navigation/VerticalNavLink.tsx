@@ -74,16 +74,20 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
     return router.pathname === item.path || handleURLQueries(router, item.path);
   }
 
+  const isNavLinkChildActive = (child: NavLink) => {
+    return router.pathname === child.path || handleURLQueries(router, child.path);
+  }
+
   return (
     <><ListItem
       disablePadding
       className='nav-link'
-      disabled={item.disabled || false}
       sx={{ mt: 1.5, px: '0 !important' }}
     >
       <Link passHref href={item.path === undefined ? '/' : `${item.path}`} legacyBehavior>
         <MenuNavLink
           component={'a'}
+          disabled={item.disabled}
           className={isNavLinkActive() ? 'active' : ''}
           {...(item.openInNewTab ? { target: '_blank' } : null)}
           onClick={e => {
@@ -134,8 +138,26 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
             <List component="div" disablePadding>
               {
                 item.children.map((child)=>
-
-                    <Link passHref href={child.path === undefined ? '/' : `${child.path}`} legacyBehavior key={child.path}>
+                  <MenuNavLink
+                    key={child.path}
+                    className={isNavLinkChildActive(child) ? 'active' : ''}
+                    {...(child.openInNewTab ? { target: '_blank' } : null)}
+                    onClick={e => {
+                      if (child.path === undefined) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }
+                      if (navVisible) {
+                        toggleNavVisibility()
+                      }
+                      router.push(`${child.path}`)
+                    }}
+                    sx={{
+                      pl: 5.5,
+                      ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' })
+                    }}
+                  >
+                    {/*<Link passHref href={child.path === undefined ? '/' : `${child.path}`} legacyBehavior key={child.path}>*/}
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemIcon>
                         </ListItemIcon>
@@ -143,7 +165,8 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
                         <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })} style={{paddingLeft: 40}}>{child.title}</Typography>
                         </Tooltip>
                       </ListItemButton>
-                    </Link>
+                    {/*</Link>*/}
+                  </MenuNavLink>
                 )
               }
             </List>
