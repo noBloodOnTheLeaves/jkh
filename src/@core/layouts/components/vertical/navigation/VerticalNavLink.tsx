@@ -152,6 +152,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
                       }
                       router.push(`${child.path}`)
                     }}
+                    disabled={child.disabled}
                     sx={{
                       pl: 5.5,
                       ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' })

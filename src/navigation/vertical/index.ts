@@ -23,7 +23,8 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Планирование',
       icon: NotebookEditOutline,
-      path: '/planning'
+      path: '/planning',
+      disabled: true
     },
     {
       title: 'Подрядчики',
@@ -37,16 +38,19 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Работы',
       icon: HammerScrewdriver,
       path: '/jobs',
+      disabled: true
     },
     {
       title: 'Отчётность',
       icon: TextBoxOutline,
       path: '/reports',
+      disabled: true
     },
     {
       title: 'Почта',
       icon: EmailOutline,
       path: '/mail',
+      disabled: true
     },
 
     /*{

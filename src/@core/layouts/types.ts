@@ -20,6 +20,7 @@ export type NavLink = {
 }
 
 export type NavGroup = {
+  disabled?: boolean;
   icon?: string | string[] | ReactNode
   title: string
   action?: string

@@ -3,8 +3,9 @@ import { ReactNode } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import { Theme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
+
+/*import { Theme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'*/
 
 // ** Layout Imports
 // !Do not remove this Layout import
@@ -35,7 +36,7 @@ const UserLayout = ({ children }: Props) => {
    *  to know more about what values can be passed to this hook.
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
-  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('xl'))
+  //const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('xl'))
 
   const UpgradeToProImg = () => {
     return (
@@ -47,7 +48,7 @@ const UserLayout = ({ children }: Props) => {
 
   return (
     <VerticalLayout
-      hidden={hidden}
+      hidden={true}
       settings={settings}
       saveSettings={saveSettings}
       verticalNavItems={VerticalNavItems()} // Navigation Items
@@ -56,7 +57,7 @@ const UserLayout = ({ children }: Props) => {
         props // AppBar Content
       ) => (
         <VerticalAppBarContent
-          hidden={hidden}
+          hidden={true}
           settings={settings}
           saveSettings={saveSettings}
           toggleNavVisibility={props.toggleNavVisibility}
