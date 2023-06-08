@@ -343,7 +343,6 @@ const Main = () => {
                     <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>АКП</Button>
                     <Button sx={{fontSize: 20, padding: '15.5px'}} style={{minWidth: '108px'}} variant={"outlined"} color={"inherit"} >АКТ А5</Button>
                     <Button size={"large"} variant={"outlined"} fullWidth><Cog color={"secondary"} sx={{fontSize: 50}}/></Button>
-                    <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>П</Button>
                     <Button sx={{fontSize: 20, padding: '15.5px'}} variant={"outlined"} color={"inherit"} fullWidth>НКО</Button>
                   </ButtonGroup>
                 </Grid>

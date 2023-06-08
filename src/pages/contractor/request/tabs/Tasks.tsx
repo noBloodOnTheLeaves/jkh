@@ -107,6 +107,21 @@ const Tasks = () => {
               autoHeight={true}
               slots={false}
               style={{height: '600px'}}
+              onRowClick={(params)=>{router.push(
+                {
+                  pathname: `/contractor/request/task/${params.id}`,
+                  query: {
+                    id: params.id,
+                    name: params.row.name,
+                    date: params.row.date,
+                    dateExpired: params.row.dateExpired,
+                    executor: params.row.executor,
+                    isOpen: params.row.status,
+                    fact: params.row.applicant,
+                    respondent: params.row.house,
+                  },
+                }
+              )}}
             />
           </Grid>
         </Grid>

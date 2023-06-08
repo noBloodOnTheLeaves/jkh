@@ -11,7 +11,7 @@ export default function handler(
 ) {
   const addId = request.map((row) => {
     // @ts-ignore
-    row.id = Math.floor(Math.random() * (201 - 1 + 1)) + 1;
+    row.id = new Date().getTime().toString() + Math.floor(Math.random()*1000000);
 
     return row;
   })
